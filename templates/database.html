@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire | Database</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+   <nav class="navbar">
+    <a href="/" class="brand">SmartHire</a>
+
+    <div style="display: flex; gap: 25px;">
+        <a href="/" class="nav-link" style="font-size: 18px;">
+            Home
+        </a>
+
+        <a href="{{ url_for('history_page') }}"
+           class="nav-link"
+           style="font-size: 18px;">
+            History
+        </a>
+    </div>
+</nav>
+
+    <main class="database-container">
+
+        <div class="database-heading">
+            <div>
+                <h1><i class="bi bi-database"></i> Analysis Database</h1>
+                <p>View the records saved in your SmartHire database.</p>
+            </div>
+
+            <span class="record-count">
+                Total Records: {{ records|length }}
+            </span>
+        </div>
+
+        {% if records %}
+        <div class="database-table-wrapper">
+            <table class="database-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Job URL</th>
+                        <th>Match Score</th>
+                        <th>Matched Skills</th>
+                        <th>Missing Skills</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record["id"] }}</td>
+
+                        <td class="database-url">
+                            <a href="{{ record['job_url'] }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                {{ record["job_url"] }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <strong>{{ record["match_score"] }}%</strong>
+                        </td>
+
+                        <td>
+                            {{ record["matched_skills"] or "None" }}
+                        </td>
+
+                        <td>
+                            {{ record["missing_skills"] or "None" }}
+                        </td>
+
+                        <td>{{ record["created_at"] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <div class="database-empty">
+            <i class="bi bi-database-exclamation"></i>
+            <h2>No records found</h2>
+            <p>Analyze a job and resume to save your first record.</p>
+            <a href="/" class="database-button">Start Analysis</a>
+        </div>
+        {% endif %}
+    </main>
+
+</body>
+</html>

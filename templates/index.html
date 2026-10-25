@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartHire | Job Analyzer</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="nav-left">
+            <a href="/database" class="nav-link">
+                <i class="bi bi-database"></i>
+                <span>Database</span>
+            </a>
+
+            <a href="{{ url_for('history_page') }}" class="nav-link">
+                <i class="bi bi-clock-history"></i>
+                <span>History</span>
+            </a>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="brand">
+            <span class="brand-icon">
+                <i class="bi bi-briefcase-fill"></i>
+            </span>
+            SmartHire
+        </a>
+
+        <div class="nav-right">
+            <span class="nav-tag">
+                <i class="bi bi-stars"></i>
+                Career Assistant
+            </span>
+        </div>
+
+    </nav>
+
+
+    <!-- Main Content -->
+    <main class="home-container">
+
+        <section class="hero-section">
+
+            <div class="hero-badge">
+                <i class="bi bi-lightning-charge-fill"></i>
+                SMART JOB MATCHING
+            </div>
+
+            <h1>
+                Your next opportunity
+                <span>starts here.</span>
+            </h1>
+
+            <p class="hero-description">
+                Compare your resume with a job description, discover
+                matching skills, and identify what you can improve
+                before applying.
+            </p>
+
+        </section>
+
+
+        <!-- Analyzer Form -->
+        <section class="analyzer-card">
+
+            <div class="card-heading">
+                <div class="heading-icon">
+                    <i class="bi bi-file-earmark-person"></i>
+                </div>
+
+                <div>
+                    <h2>Analyze your resume</h2>
+                    <p>Provide a job link and upload your resume to begin.</p>
+                </div>
+            </div>
+
+
+            <form method="POST"
+                  enctype="multipart/form-data"
+                  class="analyzer-form">
+
+                <!-- Job URL -->
+                <div class="form-group">
+
+                    <label for="job_url">
+                        <i class="bi bi-link-45deg"></i>
+                        Job posting URL
+                    </label>
+
+                    <input
+                        type="url"
+                        id="job_url"
+                        name="job_url"
+                        placeholder="https://company.com/careers/job..."
+                        value="{{ job_url }}"
+                        required
+                    >
+
+                    <small>
+                        Paste the link to the job you want to apply for.
+                    </small>
+
+                </div>
+
+
+                <!-- Resume Upload -->
+                <div class="form-group">
+
+                    <label for="resume_file">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        Upload your resume
+                    </label>
+
+                    <label for="resume_file" class="upload-area">
+
+                        <span class="upload-icon">
+                            <i class="bi bi-cloud-arrow-up"></i>
+                        </span>
+
+                        <span class="upload-title">
+                            Choose your PDF resume
+                        </span>
+
+                        <span class="upload-description">
+                            PDF format only · Maximum file size 5 MB
+                        </span>
+
+                        <input
+                            type="file"
+                            id="resume_file"
+                            name="resume_file"
+                            accept=".pdf,application/pdf"
+                            required
+                        >
+
+                    </label>
+
+                </div>
+
+
+                <!-- Error Messages -->
+                {% if error %}
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-circle"></i>
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                {% if resume_error %}
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-circle"></i>
+                        {{ resume_error }}
+                    </div>
+                {% endif %}
+
+
+                <!-- Submit Button -->
+                <button type="submit" class="analyze-button">
+                    <span>Analyze My Resume</span>
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+
+                <p class="privacy-note">
+                    <i class="bi bi-shield-check"></i>
+                    Your resume is analyzed to generate job-match insights.
+                </p>
+
+            </form>
+
+        </section>
+
+
+        <!-- Features -->
+        <section class="features-section">
+
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="bi bi-speedometer2"></i>
+                </div>
+
+                <h3>Match Score</h3>
+
+                <p>
+                    Understand how closely your skills match the job.
+                </p>
+            </div>
+
+
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+
+                <h3>Skill Comparison</h3>
+
+                <p>
+                    Identify your matching skills and skill gaps.
+                </p>
+            </div>
+
+
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="bi bi-lightbulb"></i>
+                </div>
+
+                <h3>Resume Insights</h3>
+
+                <p>
+                    Get suggestions to improve your job readiness.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="home-footer">
+            <p>SmartHire &copy; 2026 · Make your next application count.</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>

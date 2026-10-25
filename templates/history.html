@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartHire | Analysis History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/" class="brand">SmartHire</a>
+
+        <div class="history-nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="{{ url_for('database_page') }}" class="nav-link">
+                Database
+            </a>
+        </div>
+    </nav>
+
+    <main class="history-container">
+
+        <!-- Page Heading -->
+        <section class="history-header">
+            <div>
+                <span class="history-label">
+                    <i class="bi bi-clock-history"></i> YOUR ACTIVITY
+                </span>
+
+                <h1>Analysis History</h1>
+
+                <p>
+                    Review your previous resume analyses and skill matches.
+                </p>
+            </div>
+
+            <div class="history-count">
+                <i class="bi bi-files"></i>
+                <span>
+                    <strong>{{ history|length }}</strong>
+                    <small>Total Analyses</small>
+                </span>
+            </div>
+        </section>
+
+        <!-- History Actions -->
+        {% if history %}
+        <div class="history-toolbar">
+            <span>
+                <i class="bi bi-list-check"></i>
+                Your previous analyses
+            </span>
+
+            <form action="{{ url_for('clear_history_page') }}"
+                  method="POST"
+                  onsubmit="return confirm('Are you sure you want to delete ALL history?');">
+
+                <button type="submit" class="clear-history-btn">
+                    <i class="bi bi-trash3"></i>
+                    Clear All History
+                </button>
+            </form>
+        </div>
+
+        <!-- History Table -->
+        <div class="history-table-wrapper">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Job Details</th>
+                        <th>Match Score</th>
+                        <th>Matched Skills</th>
+                        <th>Missing Skills</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in history %}
+                    <tr>
+                        <td class="history-job">
+                            <i class="bi bi-briefcase"></i>
+                            <a href="{{ item['job_url'] }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View Job Posting
+                            </a>
+                        </td>
+
+                        <td>
+                            <span class="history-score">
+                                {{ item['match_score'] }}%
+                            </span>
+                        </td>
+
+                        <td>
+                            {% if item['matched_skills'] %}
+                                {{ item['matched_skills'] }}
+                            {% else %}
+                                <span class="history-muted">None</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if item['missing_skills'] %}
+                                {{ item['missing_skills'] }}
+                            {% else %}
+                                <span class="history-muted">None</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="history-date">
+                            {{ item['created_at'] }}
+                        </td>
+
+                        <td>
+                            <form action="{{ url_for('delete_history_page', history_id=item['id']) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Are you sure you want to delete this record?');">
+
+                                <button type="submit"
+                                        class="delete-history-btn"
+                                        title="Delete this analysis">
+                                    <i class="bi bi-trash3"></i>
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+
+        <!-- Empty History -->
+        <section class="history-empty">
+            <div class="history-empty-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+
+            <h2>No Analysis History Yet</h2>
+
+            <p>
+                Your previous resume and job analyses will appear here.
+                Start your first analysis to get going.
+            </p>
+
+            <a href="/" class="history-start-btn">
+                <i class="bi bi-plus-circle"></i>
+                Start New Analysis
+            </a>
+        </section>
+
+        {% endif %}
+
+        <footer class="history-footer">
+            SmartHire &mdash; Make your next career move with confidence.
+        </footer>
+
+    </main>
+
+</body>
+</html>
